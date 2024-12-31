@@ -41,10 +41,10 @@ std::string getUserChoice();
 std::string getComputerChoice();
 bool checkUserChoice(std::string choice);
 void makeLower(std::string& word);
-bool compareChoices(const std::string& uChoice, const std::string& cChoice, bool& tieFlag);
+bool compareChoices(const std::string userChoice, const std::string computerChoice, bool tieFlag);
 
 // List of all defeats for each option - Move: Defeats
-const std::map<std::string, std::array<std::string, 2>> defeats {
+const std::map<std::string, std::array<std::string, 2>> defeats{
   {"rock", {"scissors", "lizard"}},
   {"paper", {"rock", "spock"}},
   {"scissors", {"paper", "lizard"}},
@@ -168,7 +168,10 @@ void makeLower(std::string& word) {
 }
 
 // Output results and then compare userChoice and computerChoice. Return true if the user wins but false in any other case
-bool compareChoices(const std::string& uChoice, const std::string& compChoice, bool& tieFlag) {
+bool compareChoices(const std::string userChoice, const std::string computerChoice, bool tieFlag) {
+  std::string uChoice = userChoice;
+  std::string compChoice = computerChoice;
+  
   auto it = defeats.find(uChoice);
 
   std::cout << "User chose: " << uChoice << "\n";
