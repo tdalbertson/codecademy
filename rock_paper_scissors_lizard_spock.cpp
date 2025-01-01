@@ -41,7 +41,7 @@ std::string getUserChoice();
 std::string getComputerChoice();
 bool checkUserChoice(std::string choice);
 void makeLower(std::string& word);
-bool compareChoices(const std::string userChoice, const std::string computerChoice, bool tieFlag);
+int compareChoices(const std::string userChoice, const std::string computerChoice);
 
 // List of all defeats for each option - Move: Defeats
 const std::map<std::string, std::array<std::string, 2>> defeats{
@@ -50,6 +50,12 @@ const std::map<std::string, std::array<std::string, 2>> defeats{
   {"scissors", {"paper", "lizard"}},
   {"lizard", {"paper", "spock"}},
   {"spock", {"scissors", "rock"}}
+};
+
+enum comparisonResult {
+    WIN = 0,
+    LOSS,
+    TIE
 };
 
 int main() {
@@ -61,22 +67,20 @@ int main() {
   int computerPoints = 0;
 
   // Play round
-  while(!roundWon) {
+  while(userPoints != 5 && computerPoints != 5) {
     std::string userChoice = getUserChoice();
     std::string computerChoice = getComputerChoice();
     std::cout << '\n';
 
-    roundWon = compareChoices(userChoice, computerChoice, tieFlag);
+    roundWon = compareChoices(userChoice, computerChoice);
 
-    if(roundWon) {
+    if(roundWon == WIN) {
       userPoints++;
       if(userPoints == 5) {
         std::cout << "Congratulations! You won!\n";
         break;
       }
-      roundWon = false; // Reset to continue game
-    } else if(!roundWon && tieFlag) {
-      tieFlag = false;
+    } else if(roundWon == TIE) {
       continue;
     } else {
       computerPoints++;
@@ -168,9 +172,10 @@ void makeLower(std::string& word) {
 }
 
 // Output results and then compare userChoice and computerChoice. Return true if the user wins but false in any other case
-bool compareChoices(const std::string userChoice, const std::string computerChoice, bool tieFlag) {
+int compareChoices(const std::string userChoice, const std::string computerChoice) {
   std::string uChoice = userChoice;
   std::string compChoice = computerChoice;
+  enum comparisonResult result;
   
   auto it = defeats.find(uChoice);
 
@@ -181,15 +186,16 @@ bool compareChoices(const std::string userChoice, const std::string computerChoi
     for(std::string i : it->second) {
       if(uChoice == compChoice) { // Tie
         std::cout << "You tied! 🫠\n";
-        tieFlag = true;
-        return false;
+        result = TIE;
       } 
       if(i == compChoice) { // Win
         std::cout << "You won! 🙌\n";
-        return true;
+        result = WIN;
       }
     }
     std::cout << "You lost...😔\n";
-    return false;
+    result = LOSS;
    }
+   
+   return result;
 }
