@@ -1,0 +1,203 @@
+#include <iostream>
+#include <string>
+
+/*
+This program will determine which Hogwarts house the user is sorted into.
+This is done by asking the user multiple questions and tallying points for each house.
+The house with the highest amount of points is the house a user is sorted into.
+ */
+
+// Function prototypes
+int askQuestion(int questionNumber);
+int checkInput(int choice, bool qTwo = false);
+void assignPoints(int question, int choice, int &gryffindor, int &hufflepuff, int &ravenclaw, int &slytherin);
+std::string determineHouse(int gryffindor, int hufflepuff, int ravenclaw, int slytherin);
+
+int main() {
+  std::string userHouse;
+  int userChoice;
+
+  // To hold points for house sorting
+  int gryffindor = 0;
+  int hufflepuff = 0;
+  int ravenclaw = 0;
+  int slytherin = 0;
+
+  std::cout << "🎩  The Sorting Hat Quiz! 🎩\n";
+
+  for(int i = 1; i <= 4; i++) {
+    userChoice = askQuestion(i);
+    assignPoints(i, userChoice, gryffindor, hufflepuff, ravenclaw, slytherin);
+  }
+
+  userHouse = determineHouse(gryffindor, hufflepuff, ravenclaw, slytherin);
+  std::cout << "Your Hogwarts house is " << userHouse << "!" << std::endl;
+
+  return 0;
+}
+
+// Function definitions
+
+// Display questions and return answer by user
+int askQuestion(int questionNumber) {
+  int answer; 
+  bool questionTwo = false;
+
+  switch(questionNumber) {
+    case 1:
+      std::cout << "Q1) When I'm dead, I want people to remember me as:\n\n"
+                   "1) The Good\n"
+                   "2) The Great\n"
+                   "3) The Wise\n"
+                   "4) The Bold\n"
+                   "\033[1;32mAnswer: \033[0m";
+      answer = checkInput(answer);
+      break;
+    case 2:
+      std::cout <<"Q2) Dawn or Dusk?\n\n"
+                  "1) Dawn\n"
+                  "2) Dusk\n"
+                  "\033[1;32mAnswer: \033[0m";
+      questionTwo = true;
+      answer = checkInput(answer, questionTwo);
+      break;
+    case 3:
+      std::cout << "Q3) Which kind of instrument most pleases your ear?\n\n"
+                   "1) The violin\n"
+                   "2) The trumpet\n"
+                   "3) The piano\n"
+                   "4) The drum\n"
+                   "\033[1;32mAnswer: \033[0m";
+      answer = checkInput(answer);
+      break;
+    case 4:
+      std::cout << "Q4) Which road tempts you the most?\n\n"
+                   "1) The wide, sunny grassy lane\n"
+                   "2) The narrow, dark, lantern-lit alley\n"
+                   "3) The twisting, leaf-strewn path through woods\n"
+                   "4) The cobbled street lined (ancient builings)\n"
+                   "\033[1;32mAnswer: \033[0m";
+      answer = checkInput(answer);
+      break;
+    default:
+      std::cerr << "Something went wrong" << std::endl;
+      break;
+  }
+  
+  return answer;
+}
+
+// Check for valid input and ensure it is an integer 1 through 4 except when checking question # 2 AKA qTwo as it only has 2 choices
+int checkInput(int choice, bool qTwo) {
+  while(true) {
+    std::cin >> choice;
+
+    // Checking question 2
+    if(qTwo) {
+      if(std::cin.fail() || (choice != 1 && choice != 2)) {
+      std::cin.clear();
+      std::cin.ignore(1000, '\n');
+      std::cout << "Please enter numbers 1 or 2.\n";
+      continue;
+      } else {
+        return choice;
+      } 
+    }
+    // Checking all other questions
+    if(std::cin.fail() || choice < 1 || choice > 4) {
+      std::cin.clear();
+      std::cin.ignore(1000, '\n');
+      std::cout << "Please enter a number between 1 and 4.\n";
+    } else {
+      return choice;
+    } 
+  }
+}
+
+// Assign points for determining sorting of house
+void assignPoints(int question, int choice, int &gryffindor, int &hufflepuff, int &ravenclaw, int &slytherin) {
+  switch(question) {
+    case 1:
+      switch(choice) {
+        case 1:
+          hufflepuff++;
+          break;
+        case 2:
+          slytherin++;
+          break;
+        case 3:
+          ravenclaw++;
+          break;
+        case 4:
+          gryffindor++;
+          break;
+        default:
+          std::cerr << "Something went wrong" << std::endl;
+          break;
+      }
+      break;
+    case 2:
+      if(choice == 1) {
+        gryffindor++;
+        ravenclaw++;
+      } else {
+        hufflepuff++;
+        slytherin++;
+      }
+      break;
+    case 3:
+      switch(choice) {
+        case 1:
+          slytherin++;
+          break;
+        case 2:
+          hufflepuff++;
+          break;
+        case 3:
+          ravenclaw++;
+          break;
+        case 4:
+          gryffindor++;
+          break;
+        default:
+          std::cerr << "Something went wrong" << std::endl;
+          break;
+      }
+        break;
+      case 4:
+        switch(choice) {
+          case 1:
+            hufflepuff++;
+            break;
+          case 2:
+            slytherin++;
+            break;
+          case 3:
+            gryffindor++;
+            break;
+          case 4:
+            ravenclaw++;
+            break;
+          default:
+            std::cerr << "Something went wrong" << std::endl;
+            break;
+        }
+  }
+}
+
+// Take in house points variables to compare. The house with the highest number of points is the selected house
+std::string determineHouse(int gryffindor, int hufflepuff, int ravenclaw, int slytherin) {
+  const int housePoints[4] = {gryffindor, hufflepuff, ravenclaw, slytherin};
+  const std::string houses[4] = {"Gryffindor", "Hufflepuff", "Ravenclaw", "Slytherin"};
+  int highestPoints = housePoints[0];
+  std::string userHouse = houses[0];
+
+  for(int i = 1; i < 4; i++) {
+    if(highestPoints < housePoints[i]) {
+      highestPoints = housePoints[i];
+      userHouse = houses[i];
+    }
+  }
+
+  return userHouse;
+}
