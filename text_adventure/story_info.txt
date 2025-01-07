@@ -1,0 +1,59 @@
+The Forest of Lost Echoes
+Setting:
+You wake up in a dense, eerie forest. The air is thick with mist, and you have no memory of how you got here. A faint voice calls your name, echoing through the trees. You must navigate the forest and uncover its secrets while deciding whether to trust the voice.
+
+Beginning:
+You hear a voice whisper:
+"Come to me, and you will be free."
+
+You see three paths ahead:
+
+The Lighted Path: Glimmers of light guide this trail, but the forest grows eerily quiet as you approach.
+The Riverbank: A gentle stream flows nearby. It seems calm, but you sense movement beneath the water.
+The Dark Tunnel: A shadowy, overgrown tunnel looms ahead, its entrance shaped like a gaping mouth.
+The Choices and Endings:
+1. The Lighted Path
+You follow the glimmers of light, leading to a small clearing. A pedestal sits in the center, with a glowing crystal atop it.
+Choices:
+Touch the crystal: The crystal bonds with you, giving you strange powers. You become the guardian of the forest.
+
+Ending 1: The Guardian
+You protect the forest from those who seek to harm it, but you are bound to it forever.
+Ignore the crystal and move on: The forest grows darker, and you become lost forever in its depths.
+
+Ending 2: Eternal Wanderer
+You are trapped, wandering endlessly, hearing the echoes of the voice but never escaping.
+2. The Riverbank
+At the river, you see a figure in the water beckoning you to approach.
+Choices:
+Trust the figure: You enter the water and are pulled into an underwater kingdom, where you are crowned ruler.
+
+Ending 3: The River King/Queen
+You live in peace under the water but can never return to the surface.
+Refuse and follow the river downstream: You stumble upon a hidden village of survivors who help you escape the forest.
+
+Ending 4: The Survivor
+You return to the world, wiser and forever changed by your adventure.
+3. The Dark Tunnel
+Inside the tunnel, the voice grows louder, and you come face to face with its source: a spectral being claiming to be your guide.
+Choices:
+Follow the spirit: It leads you to an ancient treasure but vanishes, leaving you to fend off a cursed guardian.
+
+Ending 5: The Cursed Treasure
+You escape with the treasure, but you are haunted by the guardian for the rest of your days.
+Refuse the spirit's help: The tunnel collapses, but you find a hidden exit that leads you back to safety.
+
+Ending 6: The Lone Escape
+You escape the forest, but the voice continues to call to you in your dreams.
+
+Story map:
+                      Start
+                        |
+        ---------------------------------
+        |               |               |
+  Lighted Path      Riverbank       Dark Tunnel
+        |               |               |
+    Touch or         Trust or        Follow or
+    Ignore           Refuse          Refuse
+        |               |               |
+    Ending 1/2       Ending 3/4     Ending 5/6
