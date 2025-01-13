@@ -51,6 +51,7 @@ int main() {
 
     enableRawMode();
 
+    // From https://chatgpt.com/share/67845833-3d70-800e-9710-66ba33e3f295
     char buffer[3]; // Buffer to hold up to 3 bytes (ESC, [, A)
     while(read(STDIN_FILENO, &buffer[0], 1) == 1 && buffer[0] != 'q') {
         if (buffer[0] == '\033') { // Check if beginning of an escape sequence 
