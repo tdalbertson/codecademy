@@ -29,6 +29,8 @@ Story map:
 // Function prototypes
 void disableRawMode(); 
 void enableRawMode();
+void displayChoice();
+void getUserChoice(int &choice);
 
 
 struct termios orig_termios;
@@ -44,24 +46,15 @@ std::ostream& operator<<(std::ostream& out, const slowly_printing_string& s) {
 
 int main() {
     const std::string textSeparator = "––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––\n";
+    int userChoice;
 
     std::cout << story_text.at("setting");
     std::cout << story_text.at("beginning");
     std::cout << textSeparator;
+    displayChoice();
+    getUserChoice(userChoice);
 
-    enableRawMode();
-
-    // From https://chatgpt.com/share/67845833-3d70-800e-9710-66ba33e3f295
-    char buffer[3]; // Buffer to hold up to 3 bytes (ESC, [, A)
-    while(read(STDIN_FILENO, &buffer[0], 1) == 1 && buffer[0] != 'q') {
-        if (buffer[0] == '\033') { // Check if beginning of an escape sequence 
-            if (read(STDIN_FILENO, &buffer[1], 2) == 2) { // Check if 2 remaining bytes
-                if (buffer[1] == '[' && buffer[2] == 'A') { // Check if next 2 bytes match up arrow escape sequence
-                    std::cout << "You pressed the up arrow\n";
-                }
-            }
-        }
-    }
+    std::cout << userChoice << '\n';
 
     return 0;
 }
@@ -76,7 +69,29 @@ void enableRawMode() { // From above link
     atexit(disableRawMode);
 
     struct termios raw = orig_termios;
-    raw.c_lflag &= ~(ECHO | ICANON); // Turn off input echo in terminal
+    raw.c_lflag &= ~(ECHO | ICANON); // Turn off input echo and canonical mode in terminal
 
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
+
+void getUserChoice(int &choice) {
+    enableRawMode();
+    // From https://chatgpt.com/share/67845833-3d70-800e-9710-66ba33e3f295
+    char buffer[3]; // Buffer to hold up to 3 bytes (ESC, [, character for corresponding arrow key)
+    while (read(STDIN_FILENO, &buffer[0], 1) == 1) {
+        if (buffer[0] == '\033') { // Check if beginning of an escape sequence 
+            if (read(STDIN_FILENO, &buffer[1], 2) == 2) { // Check if 2 remaining bytes
+                if (buffer[1] == '[' && buffer[2] == 'D') { // Left arrow
+                    choice = 1;
+                    return;
+                } else if (buffer[1] == '[' && buffer[2] == 'A') { // Up arrow
+                    choice = 2;
+                    return;
+                } else if (buffer[1] == '[' && buffer[2] == 'C') { // Right arrow
+                    choice = 3;
+                    return;
+                }
+            }
+        }
+    }     
+}  
