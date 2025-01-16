@@ -29,9 +29,15 @@ Story map:
 // Function prototypes
 void disableRawMode(); 
 void enableRawMode();
-void displayChoice();
+void displayChoice(std::unordered_map<std::string, std::vector<std::string>> availableChoices, int &stage);
 void getUserChoice(int &choice);
 
+const std::unordered_map<std::string, std::vector<std::string>> choices {
+    {"first", {"Lighted Path", "Riverbank", "Dark Tunnel"}},
+    {"path1", {"Touch", "Ignore"}},
+    {"path2", {"Trust", "Refuse"}},
+    {"path3", {"Follow", "Refuse"}}
+};
 
 struct termios orig_termios;
 
@@ -47,11 +53,12 @@ std::ostream& operator<<(std::ostream& out, const slowly_printing_string& s) {
 int main() {
     const std::string textSeparator = "––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––\n";
     int userChoice;
+    int stage = 1;
 
     std::cout << story_text.at("setting");
     std::cout << story_text.at("beginning");
     std::cout << textSeparator;
-    displayChoice();
+    displayChoice(choices, stage);
     getUserChoice(userChoice);
 
     std::cout << userChoice << '\n';
@@ -92,6 +99,35 @@ void getUserChoice(int &choice) {
                     return;
                 }
             }
+        } else {
+            tcflush(STDIN_FILENO, TCIFLUSH);
         }
     }     
 }  
+
+void displayChoice(std::unordered_map<std::string, std::vector<std::string>> availableChoices, int &stage) {
+    std::cout << "Choose your path using the arrow keys: \n";
+    switch (stage) {
+        case 1:
+            for (auto choice : availableChoices.at("first")) {
+                if (choice == "Lighted Path") {
+                    std::cout << choice << " ⬅️ | ";
+                } else if (choice == "Riverbank") {
+                    std::cout << choice << " ⬆️ | ";
+                } else {
+                    std::cout << choice << " ➡️\n";
+                }
+            }
+            break;
+        case 2:
+            for (auto choice : availableChoices.at("path1")) {
+                if (choice == "Touch") {
+                    std::cout << choice << " ⬅️ | ";
+                } else {
+                    std::cout << choice << " ➡️\n";
+                }
+            }
+            break;
+
+    }
+}
